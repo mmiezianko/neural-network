@@ -42,7 +42,7 @@ class Siec:
 
         #def update(self, t, w, b, dw, db):
 
-    def trenuj(self, x_train, y_train, iteracje, lrn_rate, proc_walidacyjny = None, batch_size = None, optymalizator: Optymalizator = None):
+    def trenuj(self, x_train, y_train, iteracje, lrn_rate, proc_walidacyjny = None, batch_size = None):
         historia_trening = []
         historia_walidacja = []
         walidacja = False
@@ -75,7 +75,7 @@ class Siec:
                     for warstwa in reversed(self.warstwy):
                         # reversed -> bierzemy warstwy "od końca"
                         # i iterujemy po kolejnych obserwacjach aktualizując wagi
-                        blad = warstwa.backward_prop(lrn_rate, blad, iteracje=i, optymalizator = optymalizator)
+                        blad = warstwa.backward_prop(lrn_rate, blad, iteracje=i)
 
                     if walidacja:
                         pred_walid = self.predykcja(x_val)
@@ -119,8 +119,7 @@ class Siec:
 
                     x =x.reshape(batch_size, x.shape[-1])
                     #x ma wymiar batch x feature
-                    print(y.shape)
-                    print(x.shape)
+
                     for warstwa in self.warstwy:
                         # przeprowadza forward propagation na typie danej warstwy, czyli jeśli
                         # wprowadzimy warstwę FC to wykona forward prop dla FC, a jeśli warstwę aktywacji
@@ -134,18 +133,19 @@ class Siec:
                     # backward propagation
                     blad = self.derr_f_celu(y, x)
 
-                    print(blad.shape)
+
                     for warstwa in reversed(self.warstwy):
                         # reversed -> bierzemy warstwy "od końca"
                         # i iterujemy po kolejnych obserwacjach aktualizując wagi
-                        blad = warstwa.backward_prop(lrn_rate, blad, iteracje=i, optymalizator = optymalizator)
+                        blad = warstwa.backward_prop(lrn_rate, blad, iteracje=i)
 
                     if walidacja:
                         pred_walid = self.predykcja(x_val)
-                        blad_walid = self.f_celu(y_val, pred_walid)
+
+                        blad_walid = self.f_celu(y_val, np.array(pred_walid).squeeze(axis=-1))
                         historia_walidacja_sample.append(blad_walid)
                 if i==iteracje-1:
-                    print(blad_temp, blad_walid)
+                    print(blad_temp)
                 historia_trening.append(np.average(historia_trening_sample))
                 historia_walidacja.append(np.average(historia_walidacja_sample))
 

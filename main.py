@@ -17,11 +17,11 @@ print(x_train.shape)
 # y_train = np.reshape(y_train, (1,100, 20))
 # network
 net = Siec()
-net.dodaj_warstwe(WarstwaFC(20, 64))
+net.dodaj_warstwe(WarstwaFC(20, 64, optymalizator=AdamOptymalizator()))
 net.dodaj_warstwe(WarstwaAktywacji(sigmoid, derr_sigmoid))
-net.dodaj_warstwe(WarstwaFC(64, 64))
+net.dodaj_warstwe(WarstwaFC(64, 64, optymalizator=AdamOptymalizator()))
 net.dodaj_warstwe(WarstwaAktywacji(sigmoid, derr_sigmoid))
-net.dodaj_warstwe(WarstwaFC(64, 1))
+net.dodaj_warstwe(WarstwaFC(64, 1, optymalizator=AdamOptymalizator()))
 net.dodaj_warstwe(WarstwaAktywacji(sigmoid, derr_sigmoid))
 
 m = MSE()
@@ -29,7 +29,7 @@ bin_cross_entropy = BinaryCrossEntropy()
 
 # train
 net.ust_f_celu(bin_cross_entropy.funk, bin_cross_entropy.derr)
-historia = net.trenuj(x_train, y_train, iteracje=50, lrn_rate=0.01, proc_walidacyjny=0.2, batch_size= 32, optymalizator=AdamOptymalizator())
+historia = net.trenuj(x_train, y_train, iteracje=50, lrn_rate=0.01, proc_walidacyjny=0.2, batch_size= 32)
 
 # test
 out = net.predykcja(x_train)
