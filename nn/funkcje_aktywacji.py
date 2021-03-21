@@ -19,5 +19,9 @@ def relu(X):
    return np.maximum(0,X)
 
 def derr_relu(x):
-  return 0 if x < 0.0 else 1
+  shape = x.shape
+  for i in x.flatten() :
+    i = 0 if i < 0.0 else 1
+
+  return  x.reshape(shape)
 

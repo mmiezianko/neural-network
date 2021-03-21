@@ -1,6 +1,6 @@
 from abc import abstractmethod
 import numpy as np
-
+eps = 10e-6
 
 def algebraiczna_jedynka(size):
     return np.ones((size,  1))
@@ -21,8 +21,9 @@ class MSE(FunkcjaCelu):
 
 class BinaryCrossEntropy(FunkcjaCelu):
     def __init__(self):
-        self.funk = lambda y_true, y_pred: np.sum(-y_true * np.log(y_pred) - (algebraiczna_jedynka(y_true.shape[0])-y_true)*np.log(algebraiczna_jedynka(y_true.shape[0])-y_pred))/y_true.shape[0]
-        self.derr = lambda y_true, y_pred: ((-y_true/y_pred)+(algebraiczna_jedynka(y_true.shape[0])-y_true)/(algebraiczna_jedynka(y_true.shape[0])-y_pred))/y_true.shape[0]
+        self.funk = lambda y_true, y_pred: np.sum((-1)*y_true * np.log(y_pred) - (algebraiczna_jedynka(y_true.shape[0])-y_true)*np.log(abs(algebraiczna_jedynka(y_true.shape[0])-y_pred)))/y_true.shape[0]
+
+        self.derr = lambda y_true, y_pred: np.sum((-y_true/(y_pred+eps))+(algebraiczna_jedynka(y_true.shape[0])-y_true)/(algebraiczna_jedynka(y_true.shape[0])-(y_pred+eps)))/y_true.shape[0]
 
     def __call__(self, y_true, y_pred, *args, **kwargs):
         return self.funk(y_true, y_pred)

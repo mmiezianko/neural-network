@@ -34,9 +34,15 @@ historia = net.trenuj(x_train, y_train, iteracje=50, lrn_rate=0.01, proc_walidac
 # test
 out = net.predykcja(x_train)
 import matplotlib.pyplot as plt
-plt.plot(historia['blad_trening'], scaley = True)
-plt.plot(historia['blad_walidacji'], scaley = True)
-plt.legend(['Błąd teningowy', 'Błąd walidacyjny'])
+fix1,ax1 = plt.subplots()
+ax1.plot(historia['blad_trening'], scaley = True)
+ax1.plot(historia['blad_walidacji'], scaley = True)
+ax1.legend(['Błąd teningowy', 'Błąd walidacyjny'])
 #plt.ylim([0,1.5])
-plt.show()
+fix1.show()
+fix,ax = plt.subplots()
+ax.plot(historia['dokładnosc_walidacji'], scaley = True)
+ax.legend(['Dokładność treningowa', 'Dokładność walidacyjna'])
+#plt.ylim([0,1.5])
+fix.show()
 

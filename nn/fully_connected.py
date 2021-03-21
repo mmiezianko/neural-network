@@ -46,7 +46,10 @@ class WarstwaFC(Warstwa):
             self.wagi -= lrn_rate * gradient
             """Aktualizacja wag o gradient"""
             self.bias -= (np.full((1,derr_output_loss.shape[0]),lrn_rate) @ derr_output_loss)/derr_output_loss.shape[0]
-            "Aktualizacja biasu o jego pochodną i learning rate"
+            '''
+            Aktualizacja biasu o jego pochodną i learning rate.
+            
+            '''
 
         else:
             self.wagi, self.bias = self.optymalizator.update(iteracje, self.wagi, self.bias, gradient, derr_output_loss)
