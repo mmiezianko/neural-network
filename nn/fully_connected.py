@@ -23,7 +23,6 @@ class WarstwaFC(Warstwa):
         """
         self.X = input
         self.out = self.X @ self.wagi + self.bias
-
         return self.out
 
     def backward_prop(self, lrn_rate, derr_output_loss, iteracje=None, **kwargs):
@@ -48,7 +47,6 @@ class WarstwaFC(Warstwa):
             self.bias -= (np.full((1,derr_output_loss.shape[0]),lrn_rate) @ derr_output_loss)/derr_output_loss.shape[0]
             '''
             Aktualizacja biasu o jego pochodną i learning rate.
-            
             '''
 
         else:

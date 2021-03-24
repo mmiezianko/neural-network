@@ -23,24 +23,25 @@ class AdamOptymalizator(Optymalizator):
         ## dw, db are from current minibatch
         ## momentum beta 1
         # *** weights *** #
-        print(db.shape)
-        self.m_dw, self.v_dw = np.zeros_like(dw), np.zeros_like(dw)
-        self.m_db, self.v_db = np.zeros_like(db), np.zeros_like(db)
+
+        # self.m_dw, self.v_dw = np.zeros_like(dw), np.zeros_like(dw)
+        # self.m_db, self.v_db = np.zeros_like(db), np.zeros_like(db)
         self.m_dw = self.beta1 * self.m_dw + (1 - self.beta1) * dw
         # *** biases *** #
-        self.m_db = self.beta1 * self.m_db + (1 - self.beta1) * db
+        self.m_db = np.mean(self.beta1 * self.m_db + (1 - self.beta1) * db, axis=0)
 
         ## rms beta 2
         # *** weights *** #
         self.v_dw = self.beta2*self.v_dw + (1-self.beta2)*(dw**2)
         # *** biases *** #
-        self.v_db = np.mean(self.beta2*self.v_db + (1-self.beta2)*(db))
+        self.v_db = np.mean(self.beta2*self.v_db + (1-self.beta2)*(db),axis=0)
 
         ## bias correction
         m_dw_corr = self.m_dw/(1-self.beta1**(t+1))
-        m_db_corr = self.m_db/(1-self.beta1**(t+1))
+        m_db_corr = self.m_db.T/(1-self.beta1**(t+1))
         v_dw_corr = self.v_dw/(1-self.beta2**(t+1))
-        v_db_corr = self.v_db/(1-self.beta2**(t+1))
+        v_db_corr = self.v_db.T/(1-self.beta2**(t+1))
+
 
         ## update weights and biases
         w = w - self.eta*(m_dw_corr/(np.sqrt(v_dw_corr)+self.epsilon))

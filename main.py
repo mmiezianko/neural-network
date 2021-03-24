@@ -23,13 +23,14 @@ net.dodaj_warstwe(WarstwaFC(64, 64, optymalizator=AdamOptymalizator()))
 net.dodaj_warstwe(WarstwaAktywacji(sigmoid, derr_sigmoid))
 net.dodaj_warstwe(WarstwaFC(64, 1, optymalizator=AdamOptymalizator()))
 net.dodaj_warstwe(WarstwaAktywacji(sigmoid, derr_sigmoid))
+print([net.warstwy[0].bias.shape])
 
 m = MSE()
 bin_cross_entropy = BinaryCrossEntropy()
 
 # train
 net.ust_f_celu(bin_cross_entropy.funk, bin_cross_entropy.derr)
-historia = net.trenuj(x_train, y_train, iteracje=50, lrn_rate=0.01, proc_walidacyjny=0.2, batch_size= 32)
+historia = net.trenuj(x_train, y_train, iteracje=25, lrn_rate=0.01, proc_walidacyjny=0.2, batch_size= 32)
 
 # test
 out = net.predykcja(x_train)
@@ -42,7 +43,13 @@ ax1.legend(['Błąd teningowy', 'Błąd walidacyjny'])
 fix1.show()
 fix,ax = plt.subplots()
 ax.plot(historia['dokładnosc_walidacji'], scaley = True)
+ax.plot(historia['dokładnosc_treningowa'], scaley = True)
 ax.legend(['Dokładność treningowa', 'Dokładność walidacyjna'])
 #plt.ylim([0,1.5])
 fix.show()
 
+print([warstwa.out.shape for warstwa in net.warstwy])
+print([net.warstwy[0].bias.shape,net.warstwy[0].wagi.shape ])
+y_pred = net.predykcja(x_train)
+print(y_pred.shape,y_train.shape)
+print(accuracy(y_train,y_pred))

@@ -22,7 +22,8 @@ def train_test_split(data,test_split=0.2, seed=42):
     return x_train, y_train, x_test, y_test
 
 def accuracy(y_true,y_pred):
-    is_eq = np.round(y_pred.squeeze()) == y_true
+    is_eq = np.array(np.round(y_pred.flatten()) == y_true.flatten())
+    #print(is_eq.shape)
     return np.sum(is_eq)/len(y_true)
 
 

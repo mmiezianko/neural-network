@@ -138,12 +138,13 @@ class Siec:
                     historia_trening_loss_sample.append(blad_temp)
                     # backward propagation
                     blad = self.derr_f_celu(y, x)
-                    print(f"blad: {blad.shape}")
-                    print(f"blad1: {blad}")
+
+
 
                     for warstwa in reversed(self.warstwy):
                         # reversed -> bierzemy warstwy "od końca"
                         # i iterujemy po kolejnych obserwacjach aktualizując wagi
+
                         blad = warstwa.backward_prop(lrn_rate, blad, iteracje=i)
 
                     if walidacja:
@@ -159,7 +160,7 @@ class Siec:
                 historia_walidacja_loss.append(np.average(historia_walidacja_loss_sample))
                 if walidacja:
                     historia_walidacja_acc.append(accuracy(y_val, self.predykcja(x_val)))
-                historia_trening_acc.append(accuracy(y_train, self.predykcja(X)))
+                historia_trening_acc.append(accuracy(y_train, self.predykcja(x_train)))
 
 
 
